@@ -17,4 +17,8 @@ def playerShotLog(gameLog):
         shotLog.append(game['stat']['shots'])
     return shotLog
 
-
+def gameLogIDs(gameLog):
+    gameIds = []
+    for game in gameLog:
+        gameIds.append(game['game']['gamePk'])
+    return gameIds
