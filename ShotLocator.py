@@ -21,8 +21,12 @@ def getCoords(shotData):
     coordsListX = []
     coordsListY = []
     for shot in shotData:
-        coordsListX.append(shot['coordinates']['x'])
-        coordsListY.append(shot['coordinates']['y'])
+        if(shot['coordinates']['x'] < 0):
+            coordsListX.append(abs(shot['coordinates']['x']))
+            coordsListY.append(shot['coordinates']['y'] * (-1))
+        else:
+            coordsListX.append(shot['coordinates']['x'])
+            coordsListY.append(shot['coordinates']['y'])
 
     return coordsListX,coordsListY
 
