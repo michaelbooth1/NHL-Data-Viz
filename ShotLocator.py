@@ -12,23 +12,24 @@ def shotLocator(gameIdList, playerName):
 
         shotData = []
         for play in liveData["plays"]["allPlays"]:
-            if play["result"]["eventTypeId"] in ["SHOT","GOAL"] and play["players"][0]['player']['fullName'].lower() == playerName.lower():
-               shotData.append(play)
+            if play["result"]["eventTypeId"] in ["SHOT","GOAL","BLOCKED_SHOT","MISSED_SHOT"]:
+                if play["players"][0]['player']['fullName'].lower() == playerName.lower():
+                    shotData.append(play)
+                elif len(play["players"]) > 1:
+                    if play["players"][1]['player']['fullName'].lower() == playerName.lower():
+                        shotData.append(play)
 
         return shotData
 
 def getCoords(shotData):
-    coordsListX = []
-    coordsListY = []
+    shotList = []
     for shot in shotData:
         if(shot['coordinates']['x'] < 0):
-            coordsListX.append(abs(shot['coordinates']['x']))
-            coordsListY.append(shot['coordinates']['y'] * (-1))
+            shotList.append((abs(shot['coordinates']['x']), shot['coordinates']['y'] * (-1),shot["result"]["eventTypeId"]))
         else:
-            coordsListX.append(shot['coordinates']['x'])
-            coordsListY.append(shot['coordinates']['y'])
+            shotList.append((shot['coordinates']['x'],shot['coordinates']['y'],shot["result"]["eventTypeId"]))
 
-    return coordsListX,coordsListY
+    return shotList
 
 
 
